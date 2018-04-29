@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>URL Shortener HTTP service</title>
+        <link th:href="@{/css/InstallAndUserGuide.css}" rel="stylesheet" type="text/css"></link>
+    </head>
+    <body>
+        <div class="mainTitle">
+            <span>
+                <B>Interview task: URL Shortener HTTP service</B>
+            </span>
+        </div>
+        <div id="introduction">
+            <div class="partsTitle">
+                <span>
+                    <B>Introduction</B>
+                </span>
+            </div>
+            <div>
+                <span>URL Shortener HTTP service allows user to create short URL from the long one and use it to redirect to this original URL.</span>
+            </div>
+        </div>
+        <div id="installationGuide">
+            <div class="partsTitle">
+                <span>
+                    <B>Installation for Windows</B>
+                </span>
+            </div>
+            <div>
+                <span>In order to use URL Shortener HTTP service, (its) jar File has to be installed on the machine.</span>
+                <br>
+                <br>
+                <span>STEP 1. Navigate to the jar's folder</span>
+                <br>
+                <span>STEP 2. Double click on the jar file.</span>
+            </div>
+        </div>
+        <div id="userGuide">
+            <div class="partsTitle">
+                <span>
+                    <B>User Guide</B>
+                </span>
+            </div>
+            <div class="endpointExplanation">
+                <div class="endpointDescription">
+                    <span class="endpointExplanationTitle">REGISTER ACCOUNT</span>
+                    <span>In order to use open an account, valid Account id has to be provided.</span>
+                    <span>Account can be opened by using <B>/account</B> endpoint</span>
+                </div>
+                <div class="endpointDetails">
+                    <span><B>Details:</B></span>
+                    <table class="endpointDetailsList">
+                        <tr>
+                            <td>URL: </td>
+                            <td><B>/account</B></td>
+                        </tr>
+                        <tr>
+                            <td>Method: </td>
+                            <td>POST</td>
+                        </tr>
+                        <tr>
+                            <td>Header: </td>
+                            <td>'Content-Type' = 'application/json'</td>
+                        </tr>
+                        <tr>
+                            <td>Request Body:</td>
+                            <td>
+                                <span>AccountId = [string] required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Returns: </td>
+                            <td>json data about account registration</td>
+                        </tr>
+                    </table>
+                    <div class="exampleDetail">
+                        <table>
+                            <tr>
+                                <td>Example: </td>
+                                <td>
+                                    <span>{"AccountId":"user1"}</span>
+                                </td>
+                                <td>-></td>
+                                <td>
+                                    <span>{</span>
+                                    <span class="exampleDetailResponseData">"password":"hHe8ldpo",</span>
+                                    <span class="exampleDetailResponseData">"success":"true",</span>
+                                    <span class="exampleDetailResponseData">"description":"Your Account is opened."</span>
+                                    <span>}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="endpointExplanation">
+                <div class="endpointDescription">
+                    <span class="endpointExplanationTitle">REGISTER URL</span>
+                    <span>In order to register, user has to be authorized. In other words, Account credentials have to be provided.</span>
+                    <span>URL can be registered by using <B>/register</B> endpoint.</span>
+                </div>
+                <div class="endpointDetails">
+                    <span><B>Details:</B></span>
+                    <table class="endpointDetailsList">
+                        <tr>
+                            <td>URL: </td>
+                            <td><B>/register</B></td>
+                        </tr>
+                        <tr>
+                            <td>Method: </td>
+                            <td>POST</td>
+                        </tr>
+                        <tr>
+                            <td>Header: </td>
+                            <td>'Content-Type' = 'application/json'</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">Request Body:</td>
+                            <td class="endpointRequestBody" valign="top">
+                                <span>url = [string] required</span>
+                                <span>redirectType = [integer] optional (default:302)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Returns: </td>
+                            <td>json data about url registration</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization:</td>
+                            <td>Basic: accountId and password</td>
+                        </tr>
+                    </table>
+                    <div class="exampleDetail">
+                        <table>
+                            <tr>
+                                <td>Example:</td>
+                                <td>
+                                    <span>{</span>
+                                    <span class="exampleDetailResponseData">"url":"http://www.url1.com",</span>
+                                    <span class="exampleDetailResponseData">"redirectType":301</span>
+                                    <span>}</span>
+                                </td>
+                                <td>-></td>
+                                <td>
+                                    <span>{"shortUrl":"http://localhost:8080/P7Cu"}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <span><B>Additional details:</B> "404 Not found" error will be returned if no authorization header is provided.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="endpointExplanation">
+                <div class="endpointDescription">
+                    <span class="endpointExplanationTitle">REDIRECT URL</span>
+                    <span>By providing Short URL (response data from the Register URL endpoint) in browser or some API test software,<br> user will be redirected to the original URL.</span>
+                </div>
+                <div class="endpointDetails">
+                    <span><B>Details:</B></span>
+                    <table class="endpointDetailsList">
+                        <tr>
+                            <td>URL: </td>
+                            <td><B>/{shortenedUrlCode}</B></td>
+                        </tr>
+                        <tr>
+                            <td>Method: </td>
+                            <td>GET</td>
+                        </tr>
+                        <tr>
+                            <td>Returns: </td>
+                            <td>html of the page that it points to</td>
+                        </tr>
+                    </table>
+                    <div class="exampleDetail">
+                        <table>
+                            <tr>
+                                <td>Example:</td>
+                                <td>
+                                    <span>http://localhost:8080/P7Cu</span>
+                                </td>
+                                <td>-></td>
+                                <td>
+                                    <span>&lt;!DOCTYPE html&gt;...</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="endpointExplanation">
+                <div class="endpointDescription">
+                    <span class="endpointExplanationTitle">URL STATISTIC</span>
+                    <span>In order to get URL number of visits, user has to be authorized. In other words, Account credentials have to be provided.</span>
+                    <span>URL statistic can be found by using <B>/statistic/{AccountId}</B> endpoint.</span>
+                </div>
+                <div class="endpointDetails">
+                    <span><B>Details:</B></span>
+                    <table class="endpointDetailsList">
+                        <tr>
+                            <td>URL: </td>
+                            <td><B>/statistic/{AccountId}</B></td>
+                        </tr>
+                        <tr>
+                            <td>Method: </td>
+                            <td>GET</td>
+                        </tr>
+                        <tr>
+                            <td>Header: </td>
+                            <td>'Content-Type' = 'application/json'</td>
+                        </tr>
+                        <tr>
+                            <td>Request Parameter:</td>
+                            <td>
+                                <span>AccountId = [string] required</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Returns: </td>
+                            <td>json data which represent url statistic</td>
+                        </tr>
+                        <tr>
+                            <td>Authorization:</td>
+                            <td>Basic: accountId and password</td>
+                        </tr>
+                    </table>
+                    <div class="exampleDetail">
+                        <table>
+                            <tr>
+                                <td>Example:</td>
+                                <td>
+                                    <span>http://localhost:8080/statistic/user1</span>
+                                </td>
+                                <td>-></td>
+                                <td>
+                                    <span>{</span>
+                                    <span class="exampleDetailResponseData">"http://url1:301":"4",</span>
+                                    <span class="exampleDetailResponseData">"http://url2:302":"2"</span>
+                                    <span>}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <span><B>Additional details:</B> "404 Not found" error will be returned if no authorization header is provided.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="databaseDetails">
+            <div class="partsTitle">
+                <span>
+                    <B>Database</B>
+                </span>
+            </div>
+            <div>
+                <span>Service is using h2 in memory database. In other words, registered account(s) and URL(s) are only present in the database
+                    <br>until service is stopped.</span>
+            </div>
+        </div>
+    </body>
+</html>
